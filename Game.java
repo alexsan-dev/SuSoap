@@ -1,4 +1,3 @@
-import java.io.IOException;
 import java.util.Scanner;
 
 public class Game {
@@ -8,144 +7,80 @@ public class Game {
   private boolean exitGame = false;
   private char matrix[][];
   private int matrixSize = 0;
-  private int withError = 0;
+  private int withMessage = 0;
   private int life = 3;
-  private String name;
+  private int[] globalStatus = new int[3];
+  private int points = 20;
+  private String name = "";
 
-  // ============UTILIDADES PARA CONSOLA===============
-  // SIMPLIFICAR SYSTEM.OUT.PRINTLN
-  private void print(String msg) {
-    System.out.print(msg);
-  }
+  private Boolean verifyDimensions(int maxLength, int lengthSum, int wordsSize, int selfError) {
+    boolean out = false;
+    boolean breakVerifyDimensions = false;
+    while (!breakVerifyDimensions) {
+      if (matrixSize < maxLength || matrixSize < wordsSize || (matrixSize * matrixSize) < lengthSum) {
+        // PREGUNTAR SI QUIERE REDIMENSIONAR
+        Utils.printMenu("(1) CAMBIAR PALABRAS | (2) REDIMENSIONAR TABLERO | (3) AUTOMATICO", selfError);
+        int redimOptions = Utils.getOption(name, input);
+        switch (redimOptions) {
+          case 1:
+            // REGRESAR AL MENU ANTERIOR
+            out = false;
+            breakVerifyDimensions = true;
+            break;
+          case 2:
+            // PREGUNTAR OTRA VES POR LAS DIMENSIONES
+            setDimensions();
+            break;
+          case 3:
+            // PREGUNTAR SI QUIERE LA DIMENSION PROPUESTA
+            int recomendedSize = (((maxLength + 1) * (maxLength + 1)) < lengthSum ? maxLength + 2 : maxLength + 1);
 
-  // MENSAJES DE ERROR
-  private void errorHandler() {
-    switch (withError) {
-      case 1:
-        printCenter("Opcion no permitida, intenta de nuevo", "-");
-        break;
-      case 2:
-        printCenter("La longitud debe ser entre 5 y 10, intenta de nuevo", "-");
-        break;
-      case 3:
-        printCenter("No se pueden insertar palabras repetidas", "-");
-        break;
-      case 4:
-        printCenter("Aun no existen palabras ingresadas en el banco", "-");
-        break;
-      case 5:
-        printCenter("Lo siento, no se encontro tu palabra, busca otra", "-");
-        break;
-      case 6:
-        printCenter("Las palabras que ingresaste no caben en el tablero", "-");
-        break;
-      case 7:
-        printCenter("Solo puedes ingresar un maximo de 30 palabras", "-");
-        break;
-    }
-  }
+            withMessage = 0;
+            Utils.printMenu("Ahora tu tablero sera de [" + (recomendedSize) + "]" + "[" + (recomendedSize)
+                + "], estas de acuerdo? (si/no)", 0);
+            String confirm = Utils.getOptionStr(name, input);
 
-  // DAR FORMATO A LOS MENUS
-  public void clearScreen() {
-    // EJECUTAR COMANDO CLS O CLEAR
-    try {
-      if (System.getProperty("os.name").contains("Windows"))
-        new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
-      else
-        Runtime.getRuntime().exec("clear");
-    } catch (IOException | InterruptedException ex) {
-      System.out.println(ex);
-    }
-
-    // LUEGO DE LIMPIAR MOSTRAR ERROR SI LO HAY
-    errorHandler();
-  }
-
-  // OPTENER OPCION DE CUALQUIER MENU COMO NUMERO
-  private int getOption() {
-    print("\n" + this.name + ": ");
-    return input.nextInt();
-  }
-
-  // OPTENER TEXTO DE ENTRADA
-  private String getOptionStr() {
-    print("\n" + this.name + ": ");
-    return input.next();
-  }
-
-  // MOSTRAR TEXTO CENTRADO
-  private void printCenter(String text, String sperator) {
-    int spaces = Math.round((60 - text.trim().length()) / 2);
-
-    print("\n");
-    for (int spaceIndex = 0; spaceIndex < spaces - 1; spaceIndex++)
-      print(sperator);
-    print(" " + text.trim() + " ");
-    for (int spaceIndex2 = 0; spaceIndex2 < spaces; spaceIndex2++)
-      print(sperator);
-  }
-
-  // MOSTRAR CABECERA DE MENUS
-  private void printMenu(String title) {
-    clearScreen();
-    print("\n");
-    printCenter(title, " ");
-    print("\n-------------------------------------------------------------\n");
-  }
-
-  // VERIFICAR SI SE REPITEN LAS PALABRAS Y DONDE
-  private int isWordRepeats(String word, int limit) {
-    // VALOR POR DEFECTO
-    int out = -1;
-
-    // RECORRER LAS PALABRAS HASTA LENGTH O LIMITE
-    for (int wordIndex = 0; wordIndex < (limit == 0 ? words.length : limit); wordIndex++) {
-      if (words[wordIndex].equals(word)) {
-        out = wordIndex;
-        break;
+            // SI CONFIRMO ENTONCES REDIMENSIONAR
+            if (confirm.equals("si") || confirm.equals("Si") || confirm.equals("SI")) {
+              matrix = new char[recomendedSize][recomendedSize];
+              matrixSize = recomendedSize;
+              out = true;
+              breakVerifyDimensions = true;
+            }
+            break;
+          default:
+            withMessage = 1;
+        }
+      } else {
+        out = true;
+        breakVerifyDimensions = true;
       }
     }
-
-    // RETORNAR LA POSICION SI SE ENCONTRO
     return out;
   }
 
-  // VERIFICIAR SI EL BANCO ESTA VACIO
-  private boolean isEmpty() {
-    // SI ESTA VACIO MOSTRAR ERROR
-    if (words.length == 0) {
-      withError = 4;
-      clearScreen();
-      return true;
+  private void setWordsinMatrix() {
+    Utils.fillMatrix(matrix);
+    int[] maxLargeWords = Utils.maxLengthWord(words, matrixSize - 1);
+    int[] rRange = Utils.randomList(maxLargeWords.length);
+    int firstLineWord = (maxLargeWords.length > 1 && rRange.length > 1) ? maxLargeWords[rRange[0]] : -1;
+    int firstColWord = (maxLargeWords.length > 1 && rRange.length > 1) ? maxLargeWords[rRange[1]] : -1;
+    // PALABRA DE LONGITUD GRANDE EN PRIMERA FILA
+
+    if (firstLineWord >= 0 && firstColWord >= 0) {
+      Utils.insertonMatrix(0, 0, 0, words[firstLineWord], matrix);
+      Utils.insertonMatrix(1, 0, 0, words[firstColWord], matrix);
+
+      for (int i = 0; i < words.length; i++) {
+        if (i != firstLineWord && i != firstColWord)
+          Utils.insertonMatrix(Utils.random(0, 1), Utils.random(1, matrix.length - 1), 0, words[i], matrix);
+      }
+    } else {
+      for (int i = 0; i < words.length; i++) {
+        Utils.insertonMatrix(Utils.random(0, 1), Utils.random(1, matrix.length - 1), 1, words[i], matrix);
+      }
     }
 
-    // SINO RETORNAR FALSE
-    else
-      return false;
-  }
-
-  // VERIFICAR SI LA LONGITUD ESTA ENTRE 5 Y 10
-  private boolean wordOverflow(String word) {
-    return (word.length() >= 5 && word.length() <= 10);
-  }
-
-  // BUSCAR PALABRA EN EL BANCO
-  private String searchWord() {
-    // MOSTRAR MENU
-    printMenu("BUSCAR PALABRA EN EL BANCO DE PALABRAS");
-    String searchedWord = getOptionStr();
-
-    // VERIFICAR LA LONGITUD
-    if (wordOverflow(searchedWord)) {
-      withError = 0;
-      return searchedWord;
-    }
-
-    // SINO MOSTRAR ERROR 2 Y DEVOLVER CADENA VACIA
-    else {
-      withError = 2;
-      return "";
-    }
   }
 
   // OPCION DE INGRESAR PALABRAS
@@ -154,48 +89,50 @@ public class Game {
 
     while (!breakInsertWords) {
       // MOSTRAR MENU Y OBTENER LONGITUD
-      printMenu("CUANTAS PALABRAS TE GUSTARIA INGRESAR");
-      int wordsSize = getOption();
+      Utils.printMenu("CUANTAS PALABRAS TE GUSTARIA INGRESAR", withMessage);
+      int wordsSize = Utils.getOption(name, input);
       int wordCount = 0;
       int maxLength = 0;
+      int lengthSum = 0;
 
       // ASIGNAR LA LONGITU AL BANCO
       words = new String[wordsSize];
 
       if (wordsSize < 30) {
         // MENU DE INSERTAR
-        withError = 0;
+        withMessage = 0;
 
         while (wordCount < wordsSize) {
           // MOSTRAR MENU DE PALABRAS Y OBTENER ENTRADA
-          printMenu("INGRESA LA PALABRA NUMERO " + (wordCount + 1));
-          String currentWord = getOptionStr();
+          Utils.printMenu("INGRESA LA PALABRA NUMERO " + (wordCount + 1), withMessage);
+          String currentWord = Utils.getOptionStr(name, input);
 
           // VERIFICAR LA LONGITUD
-          if (wordOverflow(currentWord)) {
+          if (Utils.wordOverflow(currentWord)) {
             // EVITAR EXCEPCION EN 0 POR QUE LA PRIMERA PALABRA NO ES REPETIDA
             if (wordCount > 0) {
               // VERIFICAR SI SE REPITIO UNA PALABRA
-              int breakRepeat = isWordRepeats(currentWord, wordCount);
+              int breakRepeat = Utils.isWordRepeats(currentWord, wordCount, words);
 
               // SINO ESTA REPETIDA AGREGAR AL BANCO Y SALIR
               if (breakRepeat < 0) {
-                withError = 0;
+                withMessage = 0;
                 words[wordCount] = currentWord;
 
                 // ASIGNAR VALOR MAXIMO DE LONGITUD
                 maxLength = Math.max(maxLength, currentWord.length());
+                lengthSum += currentWord.length();
                 wordCount++;
               }
 
               // SINO MOSTRAR ERROR 3
               else
-                withError = 3;
+                withMessage = 3;
             }
 
             // SI ES LA PRIMERA PALABRA ASIGNAR DIRECTAMENTE
             else {
-              withError = 0;
+              withMessage = 0;
               words[0] = currentWord;
 
               // ASIGNAR VALOR MAXIMO DE LONGITUD
@@ -206,122 +143,119 @@ public class Game {
 
           // SINO MOSTRAR ERROR 2
           else
-            withError = 2;
+            withMessage = 2;
         }
 
         // VERIFICAR SI LAS PALABRAS CABEN O NO
-        if (matrixSize < maxLength || matrixSize < wordsSize) {
-          withError = 6;
-          // PREGUNTAR SI QUIERE REDIMENSIONAR
-          printMenu(
-              "Ahora tu tablero sera de [" + (maxLength) + "]" + "[" + (maxLength) + "], estas de acuerdo? (si/no)");
-          String confirm = getOptionStr();
-
-          // SI CONFIRMO ENTONCES REDIMENSIONAR
-          if (confirm.equals("si") || confirm.equals("Si") || confirm.equals("SI")) {
-            matrix = new char[maxLength][maxLength];
-            matrixSize = maxLength;
-          }
-        }
+        breakInsertWords = verifyDimensions(maxLength, lengthSum, wordsSize, 6);
 
         // SALIR SIN ERRORES
-        withError = 0;
-        breakInsertWords = true;
-      } else {
-        withError = 7;
-      }
+        withMessage = 0;
+      } else
+        withMessage = 7;
     }
+
+    setWordsinMatrix();
   }
 
   // OPCION DE ACTUALIZAR PALABRAS
   private void updateWords() {
     // VERIFICAR SI EL BANCO NO ESTA VACIO
-    if (!isEmpty()) {
+    if (!Utils.isEmpty(words)) {
       boolean breakSearch = false;
-      withError = 0;
+      withMessage = 0;
 
       while (!breakSearch) {
         // BUSCAR UNA PALABRA PARA MODIFICAR
-        String searchedWord = searchWord();
+        String searchedWord = Utils.searchWord(withMessage, name, input);
 
         // SI SE ENCONTRO EN EL BANCO MOSTRAR MENU
-        if (searchedWord.length() > 0) {
-          // OBTENER LA POSICION DE LA BUSQUEDA
-          int foundSearch = isWordRepeats(searchedWord, 0);
+        if (Utils.wordOverflow(searchedWord)) {
+          if (searchedWord.length() > 0) {
+            // OBTENER LA POSICION DE LA BUSQUEDA
+            int foundSearch = Utils.isWordRepeats(searchedWord, 0, words);
 
-          // SI EXISTE LA POSICION MOSTRAR MENU
-          if (foundSearch >= 0) {
-            withError = 0;
-            boolean breakReplace = false;
+            // SI EXISTE LA POSICION MOSTRAR MENU
+            if (foundSearch >= 0) {
+              withMessage = 0;
+              boolean breakReplace = false;
 
-            // OBTENER DATOS
-            while (!breakReplace) {
-              // MOSTRAR MENU DE REMPLAZO Y OBTENER PALABRA
-              printMenu("POR CUAL PALABRA DESEAS REMPLAZAR '" + words[foundSearch] + "'");
-              String replaceWord = getOptionStr();
+              // OBTENER DATOS
+              while (!breakReplace) {
+                // MOSTRAR MENU DE REMPLAZO Y OBTENER PALABRA
+                Utils.printMenu("POR CUAL PALABRA DESEAS REMPLAZAR '" + words[foundSearch] + "'", 0);
+                String replaceWord = Utils.getOptionStr(name, input);
 
-              // VERIFICAR LA LONGITUD
-              if (wordOverflow(replaceWord)) {
+                // VERIFICAR LA LONGITUD
+                if (Utils.wordOverflow(replaceWord)) {
 
-                // VERIFICIAR SI LA PALABRA DE REMPLAZO NO SE REPITE
-                if (isWordRepeats(replaceWord, 0) < 0) {
-                  // ASIGNAR AL BANCO LA NUEVA PALABRA Y SALIR
-                  withError = 0;
-                  words[foundSearch] = replaceWord;
-                  breakSearch = true;
-                  breakReplace = true;
+                  // VERIFICIAR SI LA PALABRA DE REMPLAZO NO SE REPITE
+                  if (Utils.isWordRepeats(replaceWord, 0, words) < 0) {
+                    // ASIGNAR AL BANCO LA NUEVA PALABRA Y SALIR
+                    withMessage = 0;
+                    words[foundSearch] = replaceWord;
+                    breakSearch = true;
+                    breakReplace = true;
+                  }
+
+                  // SINO MOSTRAR ERROR 3
+                  else
+                    withMessage = 3;
                 }
 
-                // SINO MOSTRAR ERROR 3
+                // SINO MOSTRAR ERROR 2
                 else
-                  withError = 3;
+                  withMessage = 2;
               }
+            }
 
-              // SINO MOSTRAR ERROR 2
-              else
-                withError = 2;
+            // SINO MOSTRAR ERROR 5
+            else {
+              withMessage = 5;
             }
           }
-
-          // SINO MOSTRAR ERROR 5
-          else {
-            withError = 5;
-          }
+        } else {
+          withMessage = 2;
         }
       }
-    }
+    } else
+      withMessage = 4;
   }
 
   // OPCION DE BORRAR PALABRAS
   private void deleteWords() {
     // VERIFICAR SI EL BANCO NO ESTA VACIO
-    if (!isEmpty()) {
+    if (!Utils.isEmpty(words)) {
       boolean breaDelkSearch = false;
       // EMPEZAR MENU
-      withError = 0;
+      withMessage = 0;
 
       while (!breaDelkSearch) {
         // BUSCAR PALABRA
-        String searchDelWord = searchWord();
+        String searchDelWord = Utils.searchWord(withMessage, name, input);
 
-        // VERIFICIAR SI EXISTE EN EL BANCO
-        if (searchDelWord.length() > 0) {
-          // OBTENER LA POSICION DE LA PALABRA
-          int delWordIndex = isWordRepeats(searchDelWord, 0);
+        if (Utils.wordOverflow(searchDelWord)) {
+          // VERIFICIAR SI EXISTE EN EL BANCO
+          if (searchDelWord.length() > 0) {
+            // OBTENER LA POSICION DE LA PALABRA
+            int delWordIndex = Utils.isWordRepeats(searchDelWord, 0, words);
 
-          // SI EXISTE ASIGNAR CADENA VACIA EN ESA POSICION Y SALIR
-          if (delWordIndex >= 0) {
-            withError = 0;
-            words[delWordIndex] = "";
-            breaDelkSearch = true;
+            // SI EXISTE ASIGNAR CADENA VACIA EN ESA POSICION Y SALIR
+            if (delWordIndex >= 0) {
+              withMessage = 0;
+              words[delWordIndex] = "";
+              breaDelkSearch = true;
+            }
+
+            // SINO MOSTRAR ERROR 5
+            else
+              withMessage = 5;
           }
-
-          // SINO MOSTRAR ERROR 5
-          else
-            withError = 5;
-        }
+        } else
+          withMessage = 2;
       }
-    }
+    } else
+      withMessage = 4;
   }
 
   // MENU DE INSERTAR PALABRAS INICIALES
@@ -329,10 +263,10 @@ public class Game {
     boolean breakInsert = false;
     while (!breakInsert) {
       // MOSTRAR MENU SIN ERRORES
-      printMenu("(1) INSERTAR | (2) MODIFICAR | (3) ELIMINAR | (4) SALIR");
-      withError = 0;
+      Utils.printMenu("(1) INSERTAR | (2) MODIFICAR | (3) ELIMINAR | (4) SALIR", withMessage);
+      withMessage = 0;
 
-      switch (getOption()) {
+      switch (Utils.getOption(name, input)) {
         case 1:
           // OPCION 1 INSERTAR PALABRAS
           insertWords();
@@ -351,28 +285,66 @@ public class Game {
           break;
         default:
           // MOSTRAR ERROR SINO ES LA OPCION CORRECTA
-          withError = 1;
+          withMessage = 1;
           break;
       }
     }
   }
 
+  private String printPlayMenu() {
+    Utils.clearScreen(withMessage);
+    Utils.printMatrix(matrix);
+    Utils.print("\n");
+    Utils.printCenter("Ingresa todas las palabras que encuentres\n", " ");
+    Utils.print("\n-------------------------------------------------------------------\n");
+    Utils.print("\n<3 Vidas: " + life + " | * puntos: " + points);
+    return Utils.getOptionStr(name, input);
+  }
+
   // MENU DE JUGAR
   private void playMenu() {
-    // VERIFICAR SI EL BANCO NO ESTA VACIO
-    if (!isEmpty()) {
+    int foundWords = words.length;
+    String firstWord = "";
+    points = 20;
+    life = 3;
 
+    // VERIFICAR SI EL BANCO NO ESTA VACIO
+    while (life > 0 && foundWords > 0) {
+      if (!Utils.isEmpty(words)) {
+        String word = printPlayMenu();
+
+        if (Utils.isWordRepeats(word, 0, firstWord.split(",")) < 0) {
+          firstWord += "," + word;
+          if (Utils.isWordRepeats(word, 0, words) >= 0) {
+            withMessage = 10;
+            points += word.length();
+            foundWords--;
+          } else {
+            withMessage = 8;
+            life--;
+          }
+        } else {
+          withMessage = 3;
+          life--;
+        }
+      } else
+        withMessage = 4;
     }
+
+    withMessage = 9;
+    globalStatus[0] = points;
+    globalStatus[1] = foundWords == 0 ? 1 : 0;
+    globalStatus[2] = life == 0 ? 0 : 1;
   }
 
   // MENU DE NUEVA PARTIDA
   private void menu() {
     while (!exitGame) {
       // LIMPIAR PANTALLA, MOSTRAR MENU PRINCIPAL SIN ERRORES
-      printMenu("(1) INGRESO DE PALABRAS | (2) JUGAR | (3) TERMINAR PARTIDA");
-      withError = 0;
+      Utils.printMenu("(1) INGRESO DE PALABRAS | (2) JUGAR | (3) TERMINAR PARTIDA", withMessage);
+      withMessage = 0;
 
-      switch (getOption()) {
+      switch (Utils.getOption(name, input)) {
         case 1:
           // OPCION 1 MENU DE INSERTAR PALABRAS PRINCIPALES
           insertWordsMenu();
@@ -387,20 +359,46 @@ public class Game {
           break;
         default:
           // MOSTRAR ERROR DE OPCION INCORRECTA
-          withError = 1;
+          withMessage = 1;
       }
     }
   }
 
-  private void setData() {
-    print("Hola, Cual es tu nombre?: ");
-    this.name = input.nextLine();
-    print("Ok " + this.name + ", De que dimension quieres tu tablero?: ");
-    this.matrixSize = input.nextInt();
-    matrix = new char[matrixSize][matrixSize];
+  public int[] getStatus() {
+    return globalStatus;
   }
 
-  public Game() {
+  public String getName() {
+    return name;
+  }
+
+  private void setData() {
+    // PREGUNTAR NOMBRE Y DIMENSION
+    withMessage = 0;
+    Utils.printMenu("HOLA, CUAL ES TU NOMBRE", 0);
+    name = Utils.getOptionStr(name, input);
+    setDimensions();
+  }
+
+  private void setDimensions() {
+    // PREGUNTAR QUE DIMENSION DESEA
+    boolean breakSetDimensions = false;
+    withMessage = 0;
+    while (!breakSetDimensions) {
+      Utils.printMenu("DE QUE DIMENSION QUIERES TU TABLERO", withMessage);
+      matrixSize = Utils.getOption(name, input);
+
+      if (matrixSize < 100) {
+        // ASIGNAR DIMENSIONES DE LA MATRIZ
+        withMessage = 0;
+        matrix = new char[matrixSize][matrixSize];
+        breakSetDimensions = true;
+      } else
+        withMessage = 1;
+    }
+  }
+
+  public void start() {
     setData();
     menu();
   }
