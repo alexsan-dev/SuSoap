@@ -27,14 +27,20 @@ public class Utils {
 
   // MOSTRAR CABECERA DE MENUS
   public static void printMenu(String title, int warning) {
+    // LIMPIAR PANTALLA CON ALERTAS
     clearScreen(warning);
     System.out.println("");
+
+    // IMPRIMIR AL CENTRO EL TITULO
     printCenter(title, " ");
+
+    // IMPRIMIR LINEA DE DIVISION
     System.out.print("\n-------------------------------------------------------------------\n");
   }
 
   // IMPRIMIR BANNER
   public static void printBanner() {
+    // IMPRIMIR FILA POR FILA
     System.out.print(
         "    MP''''''`MM          MP''''''`MM\n    M  mmmmm..M          M  mmmmm..M\n    M.      `YM dP    dP M.      `YM .d8888b. .d8888b. 88d888b.\n    MMMMMMM.  M 88    88 MMMMMMM.  M 88'  `88 88'  `88 88'  `88\n    M. .MMM'  M 88.  .88 M. .MMM'  M 88.  .88 88.  .88 88.  .88\n    Mb.     .dM `88888P' Mb.     .dM `88888P' `88888P8 88Y888P'\n    MMMMMMMMMMM          MMMMMMMMMMM                   88\n                                                       dP  ");
   }
@@ -75,7 +81,6 @@ public class Utils {
   }
 
   // ============= UTILIDADES PARA EL SCANNER =============
-
   // OPTENER OPCION DE CUALQUIER MENU COMO NUMERO
   public static int getOption(String name, Scanner input) {
     // FORMATO PARA INGRESAR
@@ -95,6 +100,7 @@ public class Utils {
 
   // OPTENER TEXTO DE ENTRADA COMO STRING
   public static String getOptionStr(String name, Scanner input) {
+    // FORMATO DE ENTRADA
     System.out.print("\n" + name + " => ");
     return input.next();
   }
@@ -102,6 +108,7 @@ public class Utils {
   // ============= UTILIDADES PARA STRINGS =============
   // GENEREAR LETRA RANDOM
   public static char randomLetter() {
+    // DECLARAR CARACTERES
     char[] letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray();
 
     // RETORNAR LETRA RANDOM DE 0 A 26*2
@@ -121,9 +128,40 @@ public class Utils {
     return out;
   }
 
+  // REDUCIR DIMENSION DE STRINGS[]
+  public static String[] reduceString(String[] vector, int dimension) {
+    // DECLARAS NUEVO VECTOR
+    String[] newString = new String[dimension];
+
+    // ASIGNAR VALORES DE VECTOR
+    for (int i = 0; i < dimension; i++)
+      newString[i] = vector[i];
+
+    // RETORNAR NUEVO VECTOR
+    return newString;
+  }
+
   // VERIFICAR SI LA LONGITUD ESTA ENTRE 5 Y 10
   public static boolean wordOverflow(String word) {
     return (word.length() >= 5 && word.length() <= 10);
+  }
+
+  // CORRER UN ARRAY
+  public static String[] translate(int x, int start, String[] words) {
+    // RECORRER PALABRAS Y ASIGNAR AL VALOR SIGUIENTE
+    for (int wordsIndex = start; wordsIndex < words.length; wordsIndex++) {
+      if (wordsIndex + x < words.length)
+        words[wordsIndex] = words[wordsIndex + x];
+    }
+
+    // ELIMINAR UNA POSICION
+    return reduceString(words, words.length - x);
+  }
+
+  // MENSAJE DE CONFIRMACION
+  public static boolean confirm(String name, Scanner input) {
+    String confirm = Utils.getOptionStr(name, input);
+    return (confirm.equals("si") || confirm.equals("Si") || confirm.equals("SI") || confirm.equals("sI"));
   }
 
   // ============= UTILIDADES PARA ENTEROS =============
@@ -178,6 +216,19 @@ public class Utils {
     return inverse;
   }
 
+  // REDUCIR DIMENSION DE VECTOR
+  public static int[][] reduce(int[][] vector, int firstDimension, int secondDimension) {
+    // DECLARAR NUEVO VECTOR
+    int[][] newVector = new int[firstDimension][secondDimension];
+
+    // ASIGNAR AL NUEVO VECTOR
+    for (int index = 0; index < firstDimension; index++)
+      newVector[index] = vector[index];
+
+    // RETORNAR UN NUEVO VECTOR;
+    return newVector;
+  }
+
   // ============= UTILIDADES PARA BANCO DE PALABRAS =============
   // VERIFICIAR SI EL BANCO ESTA VACIO
   public static boolean isEmpty(String[] words) {
@@ -202,9 +253,9 @@ public class Utils {
   }
 
   // BUSCAR PALABRA EN EL BANCO
-  public static String searchWord(int warning, String name, Scanner input) {
+  public static String searchWord(int warning, String title, String name, Scanner input) {
     // MOSTRAR MENU PARA BUSCAR
-    printMenu("BUSCAR PALABRA EN EL BANCO DE PALABRAS", warning);
+    printMenu(title, warning);
     String searchedWord = getOptionStr(name, input);
 
     // VERIFICAR LA LONGITUD
