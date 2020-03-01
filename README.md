@@ -4,7 +4,7 @@
 	<img  src="https://img.shields.io/badge/complete-75%25-green"/>
 	<img src="https://img.shields.io/github/license/alexsan-dev/SuSoap"/>
 	<img src="https://img.shields.io/badge/version-0.8-blue"/>
-	<img src="https://img.shields.io/badge/alexPackage-official-blue"/>
+	<img src="https://img.shields.io/badge/package-official-blue"/>
 </div>
 
 ### Main Class ☕️
@@ -18,7 +18,7 @@ Compilar todos los archivos y ejecutar el archivo con la clase main en Soap.java
 Compilar y correr (Opcional)
 
 ```
-	.\run.bat
+		.\run.bat
 ```
 
 ### Clase Juego 🎮
@@ -31,4 +31,4 @@ El archivo MainMenu.java contiene el menu principal del juego y desde donde part
 Contiene herramientas para matrices, arreglos y vectores , no solo para el juego sino una libreria en general para el manejo de estos.
 
 ### MIT LICENSE
-Alex Santos 2020
+Alex Santos® todos los derechos reservados 2020.
