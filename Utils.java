@@ -3,6 +3,7 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Utils {
+  // ============= UTILIDADES EN CONSOLA ========================
   // IMPRIMIR EN CONSOLA
   public static void print(String msg) {
     System.out.print(msg);
@@ -10,96 +11,177 @@ public class Utils {
 
   // IMPRIMIR TEXTO CENTRADO
   public static void printCenter(String text, String sperator) {
+    // CALCULAR EL ESPACIO
     int spaces = Math.round((67 - text.trim().length()) / 2);
 
-    print("\n");
-    for (int spaceIndex = 0; spaceIndex < spaces - 1; spaceIndex++)
-      print(sperator);
-    print(" " + text.trim() + " ");
-    for (int spaceIndex2 = 0; spaceIndex2 < spaces - 1; spaceIndex2++)
-      print(sperator);
+    // MOSTRAR LA MITAD DE ESPACIOS
+    System.out.print("\n");
+    System.out.print(repeatString(sperator, spaces - 1));
+
+    // MOSTRAR EL TEXTO
+    System.out.print(" " + text.trim() + " ");
+
+    // MOSTRAR LA OTRA MITAD
+    System.out.print(repeatString(sperator, spaces - 1));
   }
 
-  // MENSAJES DE ERROR
-  public static void errorHandler(int withMessage) {
-    print("\n");
-    switch (withMessage) {
-      case 0:
-        print("\n" + repeatString("=", 67));
-        break;
-      case 1:
-        printCenter("Opcion no permitida, intenta de nuevo", "=");
-        break;
-      case 2:
-        printCenter("La longitud debe ser entre 5 y 10, intenta de nuevo", "=");
-        break;
-      case 3:
-        printCenter("No se pueden insertar palabras repetidas", "=");
-        break;
-      case 4:
-        printCenter("Aun no existen palabras ingresadas en el banco", "=");
-        break;
-      case 5:
-        printCenter("Lo siento, no se encontro tu palabra, busca otra", "=");
-        break;
-      case 6:
-        printCenter("Las palabras que ingresaste no caben en el tablero", "=");
-        break;
-      case 7:
-        printCenter("Solo puedes ingresar un maximo de 30 palabras", "=");
-        break;
-      case 8:
-        printCenter("</3 Palabra no encontrada, intenta de nuevo", "=");
-        break;
-      case 9:
-        printCenter("Partida terminada, sigue jugando", "=");
-        break;
-      case 10:
-        printCenter("Palabra encontrada!, obtienes puntos", "=");
-        break;
-    }
+  // MOSTRAR CABECERA DE MENUS
+  public static void printMenu(String title, int warning) {
+    clearScreen(warning);
+    System.out.println("");
+    printCenter(title, " ");
+    System.out.print("\n-------------------------------------------------------------------\n");
+  }
+
+  // IMPRIMIR BANNER
+  public static void printBanner() {
+    System.out.print(
+        "    MP''''''`MM          MP''''''`MM\n    M  mmmmm..M          M  mmmmm..M\n    M.      `YM dP    dP M.      `YM .d8888b. .d8888b. 88d888b.\n    MMMMMMM.  M 88    88 MMMMMMM.  M 88'  `88 88'  `88 88'  `88\n    M. .MMM'  M 88.  .88 M. .MMM'  M 88.  .88 88.  .88 88.  .88\n    Mb.     .dM `88888P' Mb.     .dM `88888P' `88888P8 88Y888P'\n    MMMMMMMMMMM          MMMMMMMMMMM                   88\n                                                       dP  ");
   }
 
   // DAR FORMATO A LOS MENUS
-  public static void clearScreen(int withMessage) {
-    // EJECUTAR COMANDO CLS O CLEAR
+  public static void clearScreen(int warning) {
+    // EJECUTAR COMANDO CLS O CLEAR EN MAC/LINUX
     try {
       if (System.getProperty("os.name").contains("Windows"))
         new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
       else
         Runtime.getRuntime().exec("clear");
-    } catch (IOException | InterruptedException ex) {
+    }
+    // MOSTRAR LA EXCEPCION
+    catch (IOException | InterruptedException ex) {
       System.out.println(ex);
     }
 
-    // LUEGO DE LIMPIAR MOSTRAR ERROR SI LO HAY
-    printName();
-    errorHandler(withMessage);
+    // LUEGO DE LIMPIAR MOSTRAR EL BANNER Y ADVERTENSIAS SI LAS HAY
+    printBanner();
+    showWarning(warning);
   }
 
-  // MOSTRAR CABECERA DE MENUS
-  public static void printMenu(String title, int withMessage) {
-    clearScreen(withMessage);
-    print("\n");
-    printCenter(title, " ");
-    print("\n-------------------------------------------------------------------\n");
+  // MENSAJES DE ERROR
+  public static void showWarning(int index) {
+    // SELECCIONAR UNICA ALERTA EN STRINGS()
+    Strings warnings = new Strings();
+    String warning = warnings.getWarning(index);
+    System.out.println("");
+
+    // SI ES 0 MOSTRAR LINEA RECTA
+    if (index == 0)
+      System.out.print("\n" + repeatString("=", 67));
+
+    // SINO MOSTRAR LA ALERTA
+    else
+      printCenter(warning, "=");
   }
+
+  // ============= UTILIDADES PARA EL SCANNER =============
 
   // OPTENER OPCION DE CUALQUIER MENU COMO NUMERO
   public static int getOption(String name, Scanner input) {
-    print("\n" + name + " => ");
+    // FORMATO PARA INGRESAR
+    System.out.print("\n" + name + " => ");
+
+    // DETECTAR SI INGRESO CARACTER DIFERENTE DE ENTERO
     try {
       return input.nextInt();
-    } catch (InputMismatchException ex) {
+    }
+
+    // CONTINUAR LEYENDO Y RETORNAR ERROR 101
+    catch (InputMismatchException ex) {
       input.nextLine();
       return 101;
     }
   }
 
-  // OPTENER TEXTO DE ENTRADA
+  // OPTENER TEXTO DE ENTRADA COMO STRING
   public static String getOptionStr(String name, Scanner input) {
-    print("\n" + name + " => ");
+    System.out.print("\n" + name + " => ");
     return input.next();
+  }
+
+  // ============= UTILIDADES PARA STRINGS =============
+  // GENEREAR LETRA RANDOM
+  public static char randomLetter() {
+    char[] letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray();
+
+    // RETORNAR LETRA RANDOM DE 0 A 26*2
+    return letters[(int) (Math.random() * (letters.length))];
+  }
+
+  // REPETIR STRING N VECES
+  public static String repeatString(String str, int n) {
+    // DECLARAR SALIDA
+    String out = "";
+
+    // SUMARLE LA SALIDA N VECES
+    for (int count = 0; count < n; count++)
+      out += str;
+
+    // RETORNAR SALIDA
+    return out;
+  }
+
+  // VERIFICAR SI LA LONGITUD ESTA ENTRE 5 Y 10
+  public static boolean wordOverflow(String word) {
+    return (word.length() >= 5 && word.length() <= 10);
+  }
+
+  // ============= UTILIDADES PARA ENTEROS =============
+  // OBTENER NUMERO ALEATORIO ENTRE MIN(INCLUIDO) Y MAX(INCLUIDO)
+  public static int random(int min, int max) {
+    return (int) (Math.random() * ((max - min) + 1)) + min;
+  }
+
+  // GENERAR UNA LISTA DE NUMEROS ALEATORIOS NO REPETIDOS
+  public static int[] randomList(int n) {
+    // DECLARAR ARRAY DE SALIDA E INICIALIZAR CONTADOR
+    int[] out = new int[n];
+    int listIndex = 0;
+
+    // RECORRER EL ARRAY NUEVO
+    while (listIndex < n) {
+      // GENERAR NUMERO ALEATORIO ENTRE 0 Y N
+      int randomNumber = (int) (Math.random() * (n + 1));
+      boolean breaks = false;
+
+      // CAMBIAR BREAKS SI SE REPITE UN NUMERO
+      for (int listCount = 0; listCount < n; listCount++)
+        if (randomNumber == out[listCount])
+          breaks = true;
+
+      // SINO SE REPITIO NINGUNO ASIGNAR A OUT
+      if (!breaks) {
+        out[listIndex] = randomNumber;
+        listIndex++;
+      }
+    }
+
+    // REDUCIR LA CANTIDAD DE AUMENTO POR EL RANDOM
+    for (int finalCount = 0; finalCount < n; finalCount++)
+      out[finalCount] = out[finalCount] - 1;
+
+    // RETORNAR LA LISTA ALEATORIA NO REPETIDA
+    return out;
+  }
+
+  // INVERTIR LISTA DE ENTEROS
+  public static int[] reverse(int orderList[]) {
+    // DECLARAR LISTA INVERTIDA
+    int[] inverse = new int[orderList.length];
+    int inverseCount = orderList.length;
+
+    // ASIGNAR EL VALOR DE EXTREM0 A EXTREMO
+    for (int listIndex = 0; listIndex < orderList.length; listIndex++)
+      inverse[inverseCount - listIndex - 1] = orderList[listIndex];
+
+    // RETORNAR LISTA INVERSA
+    return inverse;
+  }
+
+  // ============= UTILIDADES PARA BANCO DE PALABRAS =============
+  // VERIFICIAR SI EL BANCO ESTA VACIO
+  public static boolean isEmpty(String[] words) {
+    return words.length == 0;
   }
 
   // VERIFICAR SI SE REPITEN LAS PALABRAS Y DONDE
@@ -108,185 +190,136 @@ public class Utils {
     int out = -1;
 
     // RECORRER LAS PALABRAS HASTA LENGTH O LIMITE
-    for (int wordIndex = 0; wordIndex < (limit == 0 ? words.length : limit); wordIndex++) {
+    for (int wordIndex = 0; wordIndex < (limit == 0 ? words.length : limit); wordIndex++)
+      // SI EL BANCO CONTIENE LA PALABRA ASIGNAR EL INDEX Y SALIR
       if (words[wordIndex].equals(word)) {
         out = wordIndex;
         break;
       }
-    }
 
     // RETORNAR LA POSICION SI SE ENCONTRO
     return out;
   }
 
-  // VERIFICIAR SI EL BANCO ESTA VACIO
-  public static boolean isEmpty(String[] words) {
-    return words.length == 0;
-  }
-
-  // VERIFICAR SI LA LONGITUD ESTA ENTRE 5 Y 10
-  public static boolean wordOverflow(String word) {
-    return (word.length() >= 5 && word.length() <= 10);
-  }
-
   // BUSCAR PALABRA EN EL BANCO
-  public static String searchWord(int withMessage, String name, Scanner input) {
-    // MOSTRAR MENU
-    printMenu("BUSCAR PALABRA EN EL BANCO DE PALABRAS", withMessage);
+  public static String searchWord(int warning, String name, Scanner input) {
+    // MOSTRAR MENU PARA BUSCAR
+    printMenu("BUSCAR PALABRA EN EL BANCO DE PALABRAS", warning);
     String searchedWord = getOptionStr(name, input);
 
     // VERIFICAR LA LONGITUD
     if (wordOverflow(searchedWord)) {
-      withMessage = 0;
+      warning = 0;
       return searchedWord;
     }
 
     // SINO MOSTRAR ERROR 2 Y DEVOLVER CADENA VACIA
     else {
-      withMessage = 2;
+      warning = 2;
       return "";
     }
   }
 
+  // ============= UTILIDADES PARA MATRIZ =============
   // OBTENER LAS PALABRAS CON LONGITUD MAXIMA
   public static int[] maxLengthWord(String[] words, int matrixSize) {
     // DECLARAR ARRAY DE PALABRAS
     int searched[] = new int[words.length];
     int extCount = 0;
 
-    // ASIGNAR LAS PALABRAS MAS GRANDES A ARRAY
-    for (int wordsIndex = 0; wordsIndex < words.length; wordsIndex++) {
+    // ASIGNAR LAS PALABRAS MAS GRANDES A ARRAY SI SU LONGITUD ES MATRIXSIZE
+    for (int wordsIndex = 0; wordsIndex < words.length; wordsIndex++)
       if (words[wordsIndex].length() == matrixSize) {
         searched[extCount] = wordsIndex;
         extCount++;
       }
-    }
 
     // REDUCIR LA LONGITUD DEL ARRAY RESULTANTE
     int out[] = new int[extCount];
-    for (int newCount = 0; newCount < extCount; newCount++) {
+    for (int newCount = 0; newCount < extCount; newCount++)
       out[newCount] = searched[newCount];
-    }
 
     // RETORNAR EL ARRAY REDUCIDO
     return out;
   }
 
-  // OBTENER NUMERO ALEATORIO ENTRE MIN(INCLUIDO) Y MAX(INCLUIDO)
-  public static int random(int min, int max) {
-    return (int) (Math.random() * ((max - min) + 1)) + min;
-  }
-
-  // RELLENAR MATRIZ
+  // RELLENAR MATRIZ CON PALABRAS ALEATORIAS
   public static void fillMatrix(char[][] words) {
-    for (int i = 0; i < words.length; i++) {
-      for (int j = 0; j < words.length; j++) {
-        words[i][j] = randomLetter();
-      }
-    }
+    // RECORRER FILAS
+    for (int row = 0; row < words.length; row++)
+      // RECORRER COLUMNAS
+      for (int col = 0; col < words.length; col++)
+        // ASIGNAR LETRA RANDOM
+        words[row][col] = randomLetter();
   }
 
   // INSERTAR PALABRA EN MATRIZ
   public static void insertonMatrix(int mode, int where, int start, String word, char[][] words) {
+    // CALCULAR ESPACIO
     int space = (words.length - word.length());
     int wordCount = -1;
 
-    if (mode == 0) {
-      for (int i = random(start, space); i < words.length; i++) {
-        wordCount++;
-        if (wordCount < word.length())
-          words[where][i] = word.charAt(wordCount);
-      }
-    } else if (mode == 1) {
-      for (int i = random(start, space); i < words.length; i++) {
-        wordCount++;
-        if (wordCount < word.length())
-          words[i][where] = word.charAt(wordCount);
-      }
+    // MODO 0 HORIZONATAL , MODO 1 VERTICAL
+    for (int wordsIndex = random(start, space); wordsIndex < words.length; wordsIndex++) {
+      wordCount++;
+      if (wordCount < word.length())
+        words[mode == 0 ? where : wordsIndex][mode == 1 ? where : wordsIndex] = word.charAt(wordCount);
     }
   }
 
   // IMPIRMIR MATRIZ
   public static void printMatrix(char[][] words) {
+    // CALCULAR ESPACIO
     int space = words.length < 16 ? (16 - words.length) * 2 : 1;
-    print("\n\n");
-    for (int i = 0; i < words.length; i++) {
-      print((repeatString(" ", space) + "-") + repeatString("----", words.length) + "\n");
-      for (int j = 0; j < words.length; j++) {
-        print((j == 0 ? (repeatString(" ", space) + "| ") : "") + words[i][j] + " | ");
-      }
-      print("\n");
+    System.out.print("\n\n");
+
+    // RECORRER FILAS
+    for (int row = 0; row < words.length; row++) {
+      // IMPRIMIR FILAS
+      System.out.print((repeatString(" ", space) + "-") + repeatString("----", words.length) + "\n");
+
+      // RECORRER COLUMNAS
+      for (int col = 0; col < words.length; col++)
+        // IMPTIMIR COLUMNAS
+        System.out.print((col == 0 ? (repeatString(" ", space) + "| ") : "") + words[row][col] + " | ");
+
+      // SALTO DE LINEA
+      System.out.print("\n");
     }
 
-    print((repeatString(" ", space) + "-") + repeatString("----", words.length) + "\n");
+    // MOSTRAR LINEA DE BORDE INFERIOR
+    System.out.print((repeatString(" ", space) + "-") + repeatString("----", words.length) + "\n");
   }
 
-  // GENEREAR LETRA RANDOM
-  public static char randomLetter() {
-    char[] letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray();
-    return letters[random(0, (letters.length - 1))];
-  }
+  // METODO BURBUJA PARA ORDENAR
+  public static StrandInt orderByPoints(int[][] status, String[] names, int length) {
+    // DECLARAR NUEVAS LISTAS ORDENADAS
+    int bubbledPoints[][] = status;
+    String[] orderNames = names;
 
-  // REPETIR STRING N VECES
-  public static String repeatString(String str, int n) {
-    String out = "";
-    for (int i = 0; i < n; i++) {
-      out += str;
-    }
-    return out;
-  }
+    // RECORRER ESTADOS
+    for (int linear = 0; linear < bubbledPoints.length; linear++) {
+      // RECORRER ESTADOS INVERSAMENTE
+      for (int inverse = 0; inverse < bubbledPoints.length - linear - 1; inverse++) {
+        // SI EL PUNTO DEL ESTADO ACTUAL ES MENOR AL SIGUIENTE
+        if (bubbledPoints[inverse][0] < bubbledPoints[inverse + 1][0]) {
+          // HACER UN SWIPE DE POSICIONES EN ESTADOS Y NOMBRES
+          // GUARDAR VARIABLE TEMPORAL SIGUIENTE
+          int[] temporalPoint = bubbledPoints[inverse + 1];
+          String temporalName = orderNames[inverse + 1];
 
-  // GENERAR UNA LISTA DE NUMEROS ALEATORIOS NO REPETIDOS
-  public static int[] randomList(int n) {
-    int[] out = new int[n];
-    int i = 0;
-    while (i < n) {
-      int r = random(0, n);
-      boolean breaks = false;
+          // ASIGNAR LA SIGUIENTE A LA ANTERIOR
+          bubbledPoints[inverse + 1] = bubbledPoints[inverse];
+          orderNames[inverse + 1] = orderNames[inverse];
 
-      for (int j = 0; j < n; j++) {
-        if (r == out[j])
-          breaks = true;
-      }
-
-      if (!breaks) {
-        out[i] = r;
-        i++;
-      }
-    }
-
-    for (int s = 0; s < n; s++) {
-      out[s] = out[s] - 1;
-    }
-    return out;
-  }
-
-  public static void printName() {
-    print(
-        "    MP''''''`MM          MP''''''`MM\n    M  mmmmm..M          M  mmmmm..M\n    M.      `YM dP    dP M.      `YM .d8888b. .d8888b. 88d888b.\n    MMMMMMM.  M 88    88 MMMMMMM.  M 88'  `88 88'  `88 88'  `88\n    M. .MMM'  M 88.  .88 M. .MMM'  M 88.  .88 88.  .88 88.  .88\n    Mb.     .dM `88888P' Mb.     .dM `88888P' `88888P8 88Y888P'\n    MMMMMMMMMMM          MMMMMMMMMMM                   88\n                                                       dP  ");
-  }
-
-  public static int[] reverse(int a[]) {
-    int[] b = new int[a.length];
-    int j = a.length;
-    for (int i = 0; i < a.length; i++) {
-      b[j - 1] = a[i];
-      j = j - 1;
-    }
-
-    return b;
-  }
-
-  public static int[] orderByPoints(int[][] status, int length) {
-    int aux = 0;
-    int[] out = new int[length];
-    for (int i = 0; i < length; i++) {
-      if (status[i][0] > status[i + 1][0]) {
-        out[i] = i;
-      } else {
-        out[i] = i + 1;
+          // ASIGNAR ACTUAL A TEMPORAL
+          bubbledPoints[inverse] = temporalPoint;
+          orderNames[inverse] = temporalName;
+        }
       }
     }
-    return reverse(out);
+
+    // RETORNAR UN NUEVO TIPO DE DATO INT[][] STRING[]
+    return new StrandInt(orderNames, bubbledPoints);
   }
 }

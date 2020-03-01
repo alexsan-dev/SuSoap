@@ -36,8 +36,8 @@ public class Game {
             int recomendedSize = (((maxLength + 1) * (maxLength + 1)) < lengthSum ? maxLength + 2 : maxLength + 1);
 
             withMessage = 0;
-            Utils.printMenu("Ahora tu tablero sera de [" + (recomendedSize) + "]" + "[" + (recomendedSize)
-                + "], estas de acuerdo? (si/no)", 0);
+            Utils.printMenu("AHORA TU TABLERO SERA DE [" + (recomendedSize) + "]" + "[" + (recomendedSize)
+                + "], ESTAS DE ACUERDO (si/no)", 0);
             String confirm = Utils.getOptionStr(name, input);
 
             // SI CONFIRMO ENTONCES REDIMENSIONAR
@@ -297,7 +297,7 @@ public class Game {
     Utils.print("\n");
     Utils.printCenter("Ingresa todas las palabras que encuentres\n", " ");
     Utils.print("\n-------------------------------------------------------------------\n");
-    Utils.print("\n<3 Vidas: " + life + " | * puntos: " + points);
+    Utils.print("<3 Vidas: " + life + "                                          <*> puntos: " + points + "\n");
     return Utils.getOptionStr(name, input);
   }
 
@@ -309,8 +309,9 @@ public class Game {
     life = 3;
 
     // VERIFICAR SI EL BANCO NO ESTA VACIO
-    while (life > 0 && foundWords > 0) {
-      if (!Utils.isEmpty(words)) {
+    if (!Utils.isEmpty(words)) {
+      while (life > 0 && foundWords > 0) {
+
         String word = printPlayMenu();
 
         if (Utils.isWordRepeats(word, 0, firstWord.split(",")) < 0) {
@@ -327,14 +328,14 @@ public class Game {
           withMessage = 3;
           life--;
         }
-      } else
-        withMessage = 4;
-    }
+      }
+      withMessage = 9;
 
-    withMessage = 9;
-    globalStatus[0] = points;
-    globalStatus[1] = foundWords == 0 ? 1 : 0;
-    globalStatus[2] = life == 0 ? 0 : 1;
+      globalStatus[0] = points;
+      globalStatus[1] = foundWords == 0 ? 1 : 0;
+      globalStatus[2] = life == 0 ? 1 : 0;
+    } else
+      withMessage = 4;
   }
 
   // MENU DE NUEVA PARTIDA
@@ -401,5 +402,9 @@ public class Game {
   public void start() {
     setData();
     menu();
+  }
+
+  public void setPlayer(String name) {
+    this.name = name;
   }
 }
