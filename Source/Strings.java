@@ -18,8 +18,8 @@ public class Strings {
       "(1) INSERTAR | (2) MODIFICAR | (3) ELIMINAR | (4) SALIR", "CUANTAS PALABRAS TE GUSTARIA INGRESAR",
       "INGRESA LA PALABRA NUMERO ", "POR CUAL PALABRA DESEAS REMPLAZAR '",
       "(1) CAMBIAR PALABRAS | (2) REDIMENSIONAR TABLERO | (3) AUTOMATICO", "AHORA TU TABLERO SERA DE [",
-      "], ESTAS DE ACUERDO (si/no)", "Ingresa las palabras que encuentres\n", "<3 Vidas: ",
-      "                                                <*> puntos: ", "BUSCAR PALABRA EN EL BANCO DE PALABRAS",
+      "], ESTAS DE ACUERDO (si/no)", "Ingresa toda palabra que encuentres\n", "|<3| Vidas: ",
+      "                                              |*| puntos: ", "BUSCAR PALABRA EN EL BANCO DE PALABRAS",
       "JUGADOR:                                          PUNTOS FALLOS PALABRAS:\n\n",
       "\n-------------------------------------------------------------------------\n",
       "JUGADOR:                                                          PUNTOS:\n\n", "JUGADOR:\n\n", };
