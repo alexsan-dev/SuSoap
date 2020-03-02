@@ -18,7 +18,7 @@ Compilar todos los archivos y ejecutar el archivo con la clase main en Soap.java
 Compilar y correr (Opcional)
 
 ```
-		.\run.bat
+    .\run.bat
 ```
 
 ### Clase Juego 🎮

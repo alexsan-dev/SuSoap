@@ -1,3 +1,5 @@
+package Source;
+
 import java.io.IOException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -12,7 +14,7 @@ public class Utils {
   // IMPRIMIR TEXTO CENTRADO
   public static void printCenter(String text, String sperator) {
     // CALCULAR EL ESPACIO
-    int spaces = Math.round((67 - text.trim().length()) / 2);
+    int spaces = Math.round((73 - text.trim().length()) / 2);
 
     // MOSTRAR LA MITAD DE ESPACIOS
     System.out.print("\n");
@@ -35,14 +37,14 @@ public class Utils {
     printCenter(title, " ");
 
     // IMPRIMIR LINEA DE DIVISION
-    System.out.print("\n-------------------------------------------------------------------\n");
+    System.out.print("\n" + repeatString("-", 73) + "\n");
   }
 
   // IMPRIMIR BANNER
   public static void printBanner() {
     // IMPRIMIR FILA POR FILA
     System.out.print(
-        "    MP''''''`MM          MP''''''`MM\n    M  mmmmm..M          M  mmmmm..M\n    M.      `YM dP    dP M.      `YM .d8888b. .d8888b. 88d888b.\n    MMMMMMM.  M 88    88 MMMMMMM.  M 88'  `88 88'  `88 88'  `88\n    M. .MMM'  M 88.  .88 M. .MMM'  M 88.  .88 88.  .88 88.  .88\n    Mb.     .dM `88888P' Mb.     .dM `88888P' `88888P8 88Y888P'\n    MMMMMMMMMMM          MMMMMMMMMMM                   88\n                                                       dP  ");
+        "       MP''''''`MM          MP''''''`MM\n       M  mmmmm..M          M  mmmmm..M\n       M.      `YM dP    dP M.      `YM .d8888b. .d8888b. 88d888b.\n       MMMMMMM.  M 88    88 MMMMMMM.  M 88'  `88 88'  `88 88'  `88\n       M. .MMM'  M 88.  .88 M. .MMM'  M 88.  .88 88.  .88 88.  .88\n       Mb.     .dM `88888P' Mb.     .dM `88888P' `88888P8 88Y888P'\n       MMMMMMMMMMM          MMMMMMMMMMM                   88\n                                                          dP  ");
   }
 
   // DAR FORMATO A LOS MENUS
@@ -73,7 +75,7 @@ public class Utils {
 
     // SI ES 0 MOSTRAR LINEA RECTA
     if (index == 0)
-      System.out.print("\n" + repeatString("=", 67));
+      System.out.print("\n" + repeatString("=", 73));
 
     // SINO MOSTRAR LA ALERTA
     else
@@ -321,7 +323,7 @@ public class Utils {
   // IMPIRMIR MATRIZ
   public static void printMatrix(char[][] words) {
     // CALCULAR ESPACIO
-    int space = words.length < 16 ? (16 - words.length) * 2 : 1;
+    int space = words.length < 18 ? (18 - words.length) * 2 : 1;
     System.out.print("\n\n");
 
     // RECORRER FILAS

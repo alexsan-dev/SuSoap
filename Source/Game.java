@@ -1,3 +1,5 @@
+package Source;
+
 import java.util.Scanner;
 
 public class Game {
@@ -114,7 +116,7 @@ public class Game {
       words = new String[wordsSize];
 
       // NO SE PUEDEN INGRESAR MAS DE 30 PALABRAS
-      if (wordsSize <= 30) {
+      if (wordsSize <= 20) {
         // MENU DE INSERTAR
         withMessage = 0;
 
@@ -371,6 +373,7 @@ public class Game {
           // SINO RESTAR VIDA
           else {
             withMessage = 8;
+            points -= 5;
             life--;
           }
         }
@@ -384,8 +387,8 @@ public class Game {
 
       // ASIGNAR PUNTOS AL ESTATUS
       globalStatus[0] = points;
-      globalStatus[1] = foundWords == 0 ? 1 : 0;
-      globalStatus[2] = life == 0 ? 1 : 0;
+      globalStatus[1] = words.length - foundWords;
+      globalStatus[2] = 3 - life;
 
       // MOSTRAR MENSAJE DE PARTIDA TERMINADA
       withMessage = 9;

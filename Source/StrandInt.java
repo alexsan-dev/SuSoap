@@ -1,3 +1,5 @@
+package Source;
+
 public class StrandInt {
   // DECLARAR LOS DOS TIPOS DE DATOS QUE RETORNA
   public String[] value;
