@@ -41,14 +41,46 @@ public class Utils {
   }
 
   // IMPRIMIR BANNER
-  public static void printBanner() {
-    // IMPRIMIR FILA POR FILA
-    System.out.print(
-        "       MP''''''`MM          MP''''''`MM\n       M  mmmmm..M          M  mmmmm..M\n       M.      `YM dP    dP M.      `YM .d8888b. .d8888b. 88d888b.\n       MMMMMMM.  M 88    88 MMMMMMM.  M 88'  `88 88'  `88 88'  `88\n       M. .MMM'  M 88.  .88 M. .MMM'  M 88.  .88 88.  .88 88.  .88\n       Mb.     .dM `88888P' Mb.     .dM `88888P' `88888P8 88Y888P'\n       MMMMMMMMMMM          MMMMMMMMMMM                   88\n                                                          dP  ");
+  public static void printBanner(int margin) {
+    // CREAR FILAS ALEATORIAS
+    char m = randomLetter();
+    char p = randomLetter();
+    char y = randomLetter();
+    char d = randomLetter();
+    char o = randomLetter();
+    char b = randomLetter();
+    char n = randomLetter();
+
+    // MOSTRAR SUSOAP
+    System.out.print(repeatString("\n", margin));
+    System.out.print("       " + m + p + "''''''`" + m + m + "          " + m + p + "''''''`" + m + m + "\n       " + m
+        + "  " + n + n + n + n + n + ".." + m + "          " + m + "  " + n + n + n + n + n + ".." + m + "\n       " + m
+        + ".      `" + y + m + " " + d + p + "    " + d + p + " " + m + ".      `" + y + m + " ." + d + o + o + o + o
+        + b + ". ." + d + o + o + o + o + b + ". " + o + o + d + o + o + o + b + ".\n       " + m + m + m + m + m + m
+        + m + ".  " + m + " " + o + o + "    " + o + o + " " + m + m + m + m + m + m + m + ".  " + m + " " + o + o
+        + "'  `" + o + o + " " + o + o + "'  `" + o + o + " " + o + o + "'  `" + o + o + "\n       " + m + ". ." + m + m
+        + m + "'  " + m + " " + o + o + ".  ." + o + o + " " + m + ". ." + m + m + m + "'  " + m + " " + o + o + ".  ."
+        + o + o + " " + o + o + ".  ." + o + o + " " + o + o + ".  ." + o + o + "\n       " + m + b + ".     ." + d + m
+        + " `" + o + o + o + o + o + p + "' " + m + b + ".     ." + d + m + " `" + o + o + o + o + o + p + "' `" + o + o
+        + o + o + o + p + o + " " + o + o + y + o + o + o + p + "'\n       " + m + m + m + m + m + m + m + m + m + m + m
+        + "          " + m + m + m + m + m + m + m + m + m + m + m + "                   " + o + o
+        + "\n                                                          " + d + p + "  ");
   }
 
-  // DAR FORMATO A LOS MENUS
-  public static void clearScreen(int warning) {
+  // IMPRIMI 73 CARACTERES ALETORIOS
+  public static void printRandom(int margin) {
+    // NUMERO DE CARACTERES
+    int space = 73;
+
+    // IMPRIMIR FILAS
+    System.out.print(repeatString("\n", margin));
+    System.out.print(
+        randomString(space) + "\n" + randomString(space) + "\n" + randomString(space) + "\n" + randomString(space)
+            + "\n" + randomString(space) + "\n" + randomString(space) + "\n" + randomString(space) + "\n");
+  }
+
+  // LIMPIAR PANTALLA
+  public static void cls() {
     // EJECUTAR COMANDO CLS O CLEAR EN MAC/LINUX
     try {
       if (System.getProperty("os.name").contains("Windows"))
@@ -60,9 +92,15 @@ public class Utils {
     catch (IOException | InterruptedException ex) {
       System.out.println(ex);
     }
+  }
+
+  // DAR FORMATO A LOS MENUS
+  public static void clearScreen(int warning) {
+    // EJECUTAR COMANDO CLS O CLEAR EN MAC/LINUX
+    cls();
 
     // LUEGO DE LIMPIAR MOSTRAR EL BANNER Y ADVERTENSIAS SI LAS HAY
-    printBanner();
+    printBanner(0);
     showWarning(warning);
   }
 
@@ -127,6 +165,15 @@ public class Utils {
       out += str;
 
     // RETORNAR SALIDA
+    return out;
+  }
+
+  public static String randomString(int n) {
+    String out = "";
+
+    for (int count = 0; count < n; count++)
+      out += randomLetter() + "";
+
     return out;
   }
 
@@ -309,11 +356,10 @@ public class Utils {
   // INSERTAR PALABRA EN MATRIZ
   public static void insertonMatrix(int mode, int where, int start, String word, char[][] words) {
     // CALCULAR ESPACIO
-    int space = (words.length - word.length());
     int wordCount = -1;
 
     // MODO 0 HORIZONATAL , MODO 1 VERTICAL
-    for (int wordsIndex = random(start, space); wordsIndex < words.length; wordsIndex++) {
+    for (int wordsIndex = start; wordsIndex < words.length; wordsIndex++) {
       wordCount++;
       if (wordCount < word.length())
         words[mode == 0 ? where : wordsIndex][mode == 1 ? where : wordsIndex] = word.charAt(wordCount);

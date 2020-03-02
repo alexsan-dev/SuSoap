@@ -31,8 +31,8 @@ public class MainMenu {
 
     // MOSTRAR ESTADO
     if (mode == 0) {
-      modeFormat = Integer.toString(orderPoints[index][0]) + ("" + (orderPoints[index][0] == 0 ? 0 : "")) + "     "
-          + Integer.toString(orderPoints[index][2]) + "         " + Integer.toString(orderPoints[index][1]);
+      modeFormat = Integer.toString(orderPoints[index][0]) + ("" + (orderPoints[index][0] == 0 ? 0 : "")) + "      "
+          + Integer.toString(orderPoints[index][2]) + "        " + Integer.toString(orderPoints[index][1]);
       space = 50;
     }
 
@@ -56,6 +56,7 @@ public class MainMenu {
   public void showPlayers(int mode, String title, String[] orderNames, int[][] orderPoints) {
     // NUEVO CONTADOR
     int winnersCount = 0;
+    int loosersCount = 0;
     alertCode = 0;
 
     // IMPRIMIR MENU
@@ -74,10 +75,12 @@ public class MainMenu {
 
       // SINO MOSTRAR CONDICIONALMENTE
       else if (mode == 1) {
-        if (status[satusIndex][1] == 0)
-          showOrderPlayers(2, orderNames, orderPoints, satusIndex, -1);
+        if (status[satusIndex][0] == 3 || status[satusIndex][0] == 0) {
+          showOrderPlayers(2, orderNames, orderPoints, satusIndex, loosersCount);
+          loosersCount++;
+        }
 
-      } else if (status[satusIndex][1] != 0) {
+      } else if (mode == 2 && status[satusIndex][0] > 0 && status[satusIndex][2] != 3) {
         showOrderPlayers(2, orderNames, orderPoints, satusIndex, winnersCount);
         winnersCount++;
       }
@@ -91,7 +94,7 @@ public class MainMenu {
   // MOSTRAR PARTIDAS
   private void showGames() {
     alertCode = 0;
-    showPlayers(0, menus[2], names, status);
+    showPlayers(0, menus[24], names, status);
   }
 
   // MOSTRAR ORDENADOS POR PUNTOS

@@ -10,11 +10,12 @@ public class Strings {
       "Palabra encontrada!, obtienes puntos" };
 
   // TEXTOS DE MENUS
+  private String exitString = " ( 0 para salir )";
   public String[] menus = { "(1) NUEVA PARTIDA | (2) HISTORIAL | (3) CREDITOS | (4) SALIR ",
-      "(1) PARTIDAS | (2) MEJORES | (3) PERDEDORES | (4) GANADORES | (5) SALIR ",
-      "PUNTUACIONES MAS ALTAS ( 0 para salir )", "PERDEDORES ( 0 para salir)", "GANADORES ( 0 para salir)",
-      "JUEGA UN POCO MAS, SEGURO QUE QUIERES SALIR (si/no)", "HOLA, CUAL ES TU NOMBRE",
-      "DE QUE DIMENSION QUIERES TU TABLERO", "(1) INGRESO DE PALABRAS | (2) JUGAR | (3) TERMINAR PARTIDA",
+      "(1) PARTIDAS | (2) MEJORES | (3) PERDEDORES | (4) GANADORES | (5) SALIR ", "PUNTUACIONES MAS ALTAS" + exitString,
+      "PERDEDORES" + exitString, "GANADORES" + exitString, "JUEGA UN POCO MAS, SEGURO QUE QUIERES SALIR (si/no)",
+      "HOLA, CUAL ES TU NOMBRE", "DE QUE DIMENSION QUIERES TU TABLERO",
+      "(1) INGRESO DE PALABRAS | (2) JUGAR | (3) TERMINAR PARTIDA",
       "(1) INSERTAR | (2) MODIFICAR | (3) ELIMINAR | (4) SALIR", "CUANTAS PALABRAS TE GUSTARIA INGRESAR",
       "INGRESA LA PALABRA NUMERO ", "POR CUAL PALABRA DESEAS REMPLAZAR '",
       "(1) CAMBIAR PALABRAS | (2) REDIMENSIONAR TABLERO | (3) AUTOMATICO", "AHORA TU TABLERO SERA DE [",
@@ -22,7 +23,8 @@ public class Strings {
       "                                              |*| puntos: ", "BUSCAR PALABRA EN EL BANCO DE PALABRAS",
       "JUGADOR:                                          PUNTOS FALLOS PALABRAS:\n\n",
       "\n-------------------------------------------------------------------------\n",
-      "JUGADOR:                                                          PUNTOS:\n\n", "JUGADOR:\n\n", };
+      "JUGADOR:                                                          PUNTOS:\n\n", "JUGADOR:\n\n",
+      "TODAS LAS PARTIDAS" + exitString };
 
   // RETORNAR UNA ALERTA
   public String getWarning(int index) {

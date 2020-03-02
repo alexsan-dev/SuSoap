@@ -11,6 +11,7 @@ public class Game {
   private boolean exitGame = false;
   private int withMessage = 0;
   private int matrixSize = 0;
+  private int[][] orderList;
   private String name = "";
   private char matrix[][];
   private int points = 20;
@@ -25,7 +26,7 @@ public class Game {
 
     while (!breakVerifyDimensions) {
       // VERIRICAR SI LAS PALBRAS OCUPAN UN ALTO MAXIMO
-      if (matrixSize < maxLength || matrixSize < wordsSize || (matrixSize * matrixSize) < lengthSum) {
+      if (matrixSize < (maxLength + 5) || matrixSize < (wordsSize + 5) || (matrixSize * matrixSize) < (lengthSum + 5)) {
         withMessage = (customMessage == 0) ? 6 : customMessage;
 
         // PREGUNTAR SI QUIERE REDIMENSIONAR Y OBTENER RESPUESTA
@@ -45,7 +46,7 @@ public class Game {
             break;
           case 3:
             // PREGUNTAR SI QUIERE LA DIMENSION PROPUESTA
-            int recomendedSize = (((maxLength + 1) * (maxLength + 1)) < lengthSum ? maxLength + 2 : maxLength + 1);
+            int recomendedSize = (((maxLength + 1) * (maxLength + 1)) < lengthSum ? maxLength + 2 : maxLength + 1) + 4;
 
             // MOSTRAR MENU
             withMessage = 0;
@@ -78,23 +79,45 @@ public class Game {
 
   private void setWordsinMatrix() {
     Utils.fillMatrix(matrix);
-    int[] maxLargeWords = Utils.maxLengthWord(words, matrixSize - 1);
+    int[] maxLargeWords = Utils.maxLengthWord(words, matrixSize - 5);
     int[] rRange = Utils.randomList(maxLargeWords.length);
-    int firstLineWord = (maxLargeWords.length > 1 && rRange.length > 1) ? maxLargeWords[rRange[0]] : -1;
-    int firstColWord = (maxLargeWords.length > 1 && rRange.length > 1) ? maxLargeWords[rRange[1]] : -1;
+    int[] mainRange = Utils.randomList(matrix.length - 5);
+    int firstLineWord = (maxLargeWords.length >= 1 && rRange.length >= 1) ? maxLargeWords[rRange[0]] : -1;
+    int firstColWord = (maxLargeWords.length >= 1 && rRange.length >= 1) ? maxLargeWords[rRange[1]] : -1;
+    orderList = new int[words.length][3];
+
     // PALABRA DE LONGITUD GRANDE EN PRIMERA FILA
 
     if (firstLineWord >= 0 && firstColWord >= 0) {
       Utils.insertonMatrix(0, 0, 0, words[firstLineWord], matrix);
-      Utils.insertonMatrix(1, 0, 0, words[firstColWord], matrix);
+      Utils.insertonMatrix(1, 0, 1, words[firstColWord], matrix);
+      int[] firstLine = { 0, 0, 0 };
+      int[] secondLine = { 1, 0, 1 };
+      orderList[firstLineWord] = firstLine;
+      orderList[firstColWord] = secondLine;
 
       for (int i = 0; i < words.length; i++) {
-        if (i != firstLineWord && i != firstColWord)
-          Utils.insertonMatrix(Utils.random(0, 1), Utils.random(1, matrix.length - 1), 0, words[i], matrix);
+        if (i != firstLineWord && i != firstColWord) {
+          int space = Utils.random(1, (matrixSize - words[i].length()));
+          int mode = Utils.random(0, 1);
+          int position = 1 + mainRange[i];
+
+          Utils.insertonMatrix(mode, position, space, words[i], matrix);
+          orderList[i][0] = mode;
+          orderList[i][1] = position;
+          orderList[i][2] = space;
+        }
       }
     } else {
       for (int i = 0; i < words.length; i++) {
-        Utils.insertonMatrix(Utils.random(0, 1), Utils.random(1, matrix.length - 1), 1, words[i], matrix);
+        int space = Utils.random(1, (matrixSize - words[i].length()));
+        int mode = Utils.random(0, 1);
+        int position = 1 + mainRange[i];
+
+        Utils.insertonMatrix(mode, position, space, words[i], matrix);
+        orderList[i][0] = mode;
+        orderList[i][1] = position;
+        orderList[i][2] = space;
       }
     }
 
@@ -364,7 +387,10 @@ public class Game {
           firstWord += "," + word;
 
           // SI LA PALABRA EXISTE EN EL BANCO SUMAR LA LONGITUD DE LA PALABRA
-          if (Utils.isWordRepeats(word, 0, words) >= 0) {
+          int foundWord = Utils.isWordRepeats(word, 0, words);
+          if (foundWord >= 0) {
+            Utils.insertonMatrix(orderList[foundWord][0], orderList[foundWord][1], orderList[foundWord][2],
+                Utils.repeatString("$", word.length()), matrix);
             points += word.length();
             withMessage = 10;
             foundWords--;

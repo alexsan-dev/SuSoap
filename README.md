@@ -1,9 +1,9 @@
 <div  align="center">
 	<h1>SuSoap ® - Java™</h1>
 	<p>Juego de sopa de letras multijugador en consola con Java, proyecto 1 de Introducción a la programación y computadoras 1. Primer semestre 2020 USAC Facultad de Ingeniería.</p>
-	<img  src="https://img.shields.io/badge/complete-75%25-green"/>
+	<img  src="https://img.shields.io/badge/complete-95%25-green"/>
 	<img src="https://img.shields.io/github/license/alexsan-dev/SuSoap"/>
-	<img src="https://img.shields.io/badge/version-0.8-blue"/>
+	<img src="https://img.shields.io/badge/version-0.87-blue"/>
 	<img src="https://img.shields.io/badge/package-official-blue"/>
 </div>
 
