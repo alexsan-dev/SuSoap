@@ -82,8 +82,8 @@ public class Game {
     int[] maxLargeWords = Utils.maxLengthWord(words, matrixSize - 5);
     int[] rRange = Utils.randomList(maxLargeWords.length);
     int[] mainRange = Utils.randomList(matrix.length - 5);
-    int firstLineWord = (maxLargeWords.length >= 1 && rRange.length >= 1) ? maxLargeWords[rRange[0]] : -1;
-    int firstColWord = (maxLargeWords.length >= 1 && rRange.length >= 1) ? maxLargeWords[rRange[1]] : -1;
+    int firstLineWord = (maxLargeWords.length > 1 && rRange.length > 1) ? maxLargeWords[rRange[0]] : -1;
+    int firstColWord = (maxLargeWords.length > 1 && rRange.length > 1) ? maxLargeWords[rRange[1]] : -1;
     orderList = new int[words.length][3];
 
     // PALABRA DE LONGITUD GRANDE EN PRIMERA FILA
