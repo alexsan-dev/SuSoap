@@ -168,12 +168,16 @@ public class Utils {
     return out;
   }
 
+  // GENERAR UNA PALABRA ALEATORIA
   public static String randomString(int n) {
+    // DECLARAR SALIDA
     String out = "";
 
+    // RECORRER HASTA N
     for (int count = 0; count < n; count++)
       out += randomLetter() + "";
 
+    // RETORNAR PALABRA
     return out;
   }
 

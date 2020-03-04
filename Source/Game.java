@@ -4,18 +4,28 @@ import java.util.Scanner;
 
 public class Game {
   // VARIABLES GLOBALES
-  private Scanner input = new Scanner(System.in);
-  private String[] menus = new Strings().menus;
-  private int[] globalStatus = new int[3];
-  private String words[] = new String[0];
-  private boolean exitGame = false;
-  private int withMessage = 0;
-  private int matrixSize = 0;
+  private int withMessage, matrixSize, points, life;
+  private String[] menus, words;
+  private int[] globalStatus;
   private int[][] orderList;
-  private String name = "";
-  private char matrix[][];
-  private int points = 20;
-  private int life = 3;
+  private boolean exitGame;
+  private char[][] matrix;
+  private Scanner input;
+  private String name;
+
+  // INICIALIZAR VARIABLES
+  public Game() {
+    input = new Scanner(System.in);
+    menus = new Strings().menus;
+    globalStatus = new int[3];
+    words = new String[0];
+    exitGame = false;
+    withMessage = 0;
+    matrixSize = 0;
+    points = 20;
+    name = "";
+    life = 3;
+  }
 
   // VERIFICIAR SI LAS PALABRAS CABEN EL EL TABLERO
   private Boolean verifyDimensions(int maxLength, int lengthSum, int wordsSize) {
@@ -68,41 +78,61 @@ public class Game {
           default:
             customMessage = 1;
         }
-      } else {
+      }
+      // SINO SALIR SIN ERRORES
+      else {
         breakVerifyDimensions = true;
         withMessage = 0;
         out = true;
       }
     }
+
+    // RETORNAR BOOLEAN
     return out;
   }
 
+  // INSERTAR PALABRAS EN LA MATRIZ
   private void setWordsinMatrix() {
+    // LLENARLA ALEATORIAMENTE
     Utils.fillMatrix(matrix);
+
+    // OBTENER LAS PALABRAS CON LOGITUG MAXIMA
     int[] maxLargeWords = Utils.maxLengthWord(words, matrixSize - 5);
+
+    // GENERAR UNA LISTA ALETORIA NO REPETIDA
     int[] rRange = Utils.randomList(maxLargeWords.length);
     int[] mainRange = Utils.randomList(matrix.length - 5);
+
+    // SELCCIONAR DOS PALABRAS CON LONGITUD MAXIMA
     int firstLineWord = (maxLargeWords.length > 1 && rRange.length > 1) ? maxLargeWords[rRange[0]] : -1;
     int firstColWord = (maxLargeWords.length > 1 && rRange.length > 1) ? maxLargeWords[rRange[1]] : -1;
+
+    // GUARDAR POSICION DE CADA PALABRA
     orderList = new int[words.length][3];
 
-    // PALABRA DE LONGITUD GRANDE EN PRIMERA FILA
-
     if (firstLineWord >= 0 && firstColWord >= 0) {
+      // PALABRA DE LONGITUD GRANDE EN PRIMERA FILA Y PRIMERA COLUMNA
       Utils.insertonMatrix(0, 0, 0, words[firstLineWord], matrix);
       Utils.insertonMatrix(1, 0, 1, words[firstColWord], matrix);
+
+      // ASIGNAR LAS POSICIONES
       int[] firstLine = { 0, 0, 0 };
       int[] secondLine = { 1, 0, 1 };
       orderList[firstLineWord] = firstLine;
       orderList[firstColWord] = secondLine;
 
+      // INSERTAR LAS DEMAS PALABRAS
       for (int i = 0; i < words.length; i++) {
         if (i != firstLineWord && i != firstColWord) {
+          // CREAR NUMEROS ALETORIOS PARA LAS POSICIONES
           int space = Utils.random(1, (matrixSize - words[i].length()));
           int mode = Utils.random(0, 1);
           int position = 1 + mainRange[i];
 
+          // INSERTAR EN LA MATRIZ
           Utils.insertonMatrix(mode, position, space, words[i], matrix);
+
+          // INSERTAR POSICIONES DE PALABRA
           orderList[i][0] = mode;
           orderList[i][1] = position;
           orderList[i][2] = space;
@@ -110,17 +140,20 @@ public class Game {
       }
     } else {
       for (int i = 0; i < words.length; i++) {
+        // CREAR NUMEROS ALETORIOS PARA LAS POSICIONES
         int space = Utils.random(1, (matrixSize - words[i].length()));
         int mode = Utils.random(0, 1);
         int position = 1 + mainRange[i];
 
+        // INSERTAR EN LA MATRIZ
         Utils.insertonMatrix(mode, position, space, words[i], matrix);
+
+        // INSERTAR POSICIONES DE PALABRA
         orderList[i][0] = mode;
         orderList[i][1] = position;
         orderList[i][2] = space;
       }
     }
-
   }
 
   // OPCION DE INGRESAR PALABRAS
@@ -377,7 +410,7 @@ public class Game {
     // VERIFICAR SI EL BANCO NO ESTA VACIO
     if (!Utils.isEmpty(words)) {
       // SALIR CUANDO LA VIDA SEA 0 O ENCONTRO TODAS LAS PALABRAS
-      while (life > 0 && foundWords > 0) {
+      while (life > 0 && foundWords >= -1) {
         // OBTENER PALABRA QUE INGRESO
         String word = printPlayMenu();
 

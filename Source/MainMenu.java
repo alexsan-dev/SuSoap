@@ -4,13 +4,22 @@ import java.util.Scanner;
 
 public class MainMenu {
   // DECLARAR VARIABLES GLOBALES
-  private String rPlayer = "Jugador#" + Utils.random(0, 10000);
-  private Scanner input = new Scanner(System.in);
-  private String[] menus = new Strings().menus;
-  private String[] names = new String[100];
-  private int[][] status = new int[100][3];
-  private int statusCount = -1;
-  private int alertCode = 0;
+  private int statusCount, alertCode;
+  private String[] menus, names;
+  private String rPlayer;
+  private int[][] status;
+  private Scanner input;
+
+  // INICIALIZAR VARIABLES
+  public MainMenu() {
+    rPlayer = "Jugador#" + Utils.random(0, 10000);
+    input = new Scanner(System.in);
+    menus = new Strings().menus;
+    status = new int[100][3];
+    names = new String[100];
+    statusCount = -1;
+    alertCode = 0;
+  }
 
   // MOSTRAR MENU SI SALE
   private Boolean showExitMenu() {
@@ -114,6 +123,14 @@ public class MainMenu {
     showPlayers(3, menus[2], orderNames, orderPoints);
   }
 
+  private void showCredits() {
+    // IMRPIMIR INFORMACION DE DESARROLADOR
+    Utils.printMenu(menus[25], 0);
+
+    // SALIR
+    Utils.getOption(rPlayer, input);
+  }
+
   // MENU DE HISTORIAL
   private void showHistory() {
     // SIN ALERTAS
@@ -157,7 +174,10 @@ public class MainMenu {
 
       // SIN ALERTAS
       alertCode = 0;
-    } else
+    }
+
+    // SINO MOSTRAR ERROR 4
+    else
       alertCode = 4;
   }
 
@@ -194,6 +214,7 @@ public class MainMenu {
           showHistory();
           break;
         case 3:
+          showCredits();
           break;
         case 4:
           // MENU DE SALIDA

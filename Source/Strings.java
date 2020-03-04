@@ -24,7 +24,8 @@ public class Strings {
       "JUGADOR:                                          PUNTOS FALLOS PALABRAS:\n\n",
       "\n-------------------------------------------------------------------------\n",
       "JUGADOR:                                                          PUNTOS:\n\n", "JUGADOR:\n\n",
-      "TODAS LAS PARTIDAS" + exitString };
+      "TODAS LAS PARTIDAS" + exitString,
+      "ALEX DANIEL SANTOS VALENZUELA\n 201904117\n\n Proyectos personales:\n Github: github.com/alexsan-dev\n NPM: https://www.npmjs.com/~alexsantos\n\n Proyectos para distribucion:\n Github: https://github.com/BlobySoftware\n NPM: https://www.npmjs.com/~blobysoftware\n\n Prueba mi nueva aplicacion oficial:\n https://mate.ingenieria.usac.app\n\n MUCHAS GRACIAS POR JUGAR :)\n escribe mi nombre para salir.\n.     " };
 
   // RETORNAR UNA ALERTA
   public String getWarning(int index) {
