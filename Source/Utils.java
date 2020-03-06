@@ -90,7 +90,7 @@ public class Utils {
     }
     // MOSTRAR LA EXCEPCION
     catch (IOException | InterruptedException ex) {
-      System.out.println(ex);
+
     }
   }
 
