@@ -12,7 +12,7 @@ public class MainMenu {
 
   // INICIALIZAR VARIABLES
   public MainMenu() {
-    rPlayer = "Jugador#" + Utils.random(0, 10000);
+    rPlayer = "Jugador ID:#" + Utils.randomString(Utils.random(1, 5)) + Utils.random(0, 10000);
     input = new Scanner(System.in);
     menus = new Strings().menus;
     status = new int[100][3];
@@ -95,9 +95,19 @@ public class MainMenu {
       }
     }
 
-    // SALIR CON CUALQUIER PALABRA
-    Utils.print("\n");
-    Utils.getOption(rPlayer, input);
+    // ERROR 11 SI NO EXISTEN PERDEDORES
+    if (mode == 1 && loosersCount == 0)
+      alertCode = 11;
+
+    // ERROR 12 SI NO EXISTEN GANADORES
+    else if (mode == 2 && winnersCount == 0)
+      alertCode = 12;
+
+    else {
+      // SALIR CON CUALQUIER PALABRA
+      Utils.print("\n");
+      Utils.getOption(rPlayer, input);
+    }
   }
 
   // MOSTRAR PARTIDAS
@@ -178,7 +188,7 @@ public class MainMenu {
 
     // SINO MOSTRAR ERROR 4
     else
-      alertCode = 4;
+      alertCode = 13;
   }
 
   // MENU PRINCIPAL
