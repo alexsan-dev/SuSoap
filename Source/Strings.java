@@ -20,12 +20,13 @@ public class Strings {
       "INGRESA LA PALABRA NUMERO ", "POR CUAL PALABRA DESEAS REMPLAZAR '",
       "(1) CAMBIAR PALABRAS | (2) REDIMENSIONAR TABLERO | (3) AUTOMATICO", "AHORA TU TABLERO SERA DE [",
       "], ESTAS DE ACUERDO (si/no)", "Ingresa toda palabra que encuentres\n", "|<3| Vidas: ",
-      "                                              |*| puntos: ", "BUSCAR PALABRA EN EL BANCO DE PALABRAS",
+      "                |*| puntos: ", "BUSCAR PALABRA EN EL BANCO DE PALABRAS",
       "JUGADOR:                                          PUNTOS FALLOS PALABRAS:\n\n",
       "\n-------------------------------------------------------------------------\n",
       "JUGADOR:                                                          PUNTOS:\n\n", "JUGADOR:\n\n",
       "TODAS LAS PARTIDAS" + exitString,
-      "ALEX DANIEL SANTOS VALENZUELA\n 201904117\n\n Proyectos personales:\n Github: github.com/alexsan-dev\n NPM: https://www.npmjs.com/~alexsantos\n\n Proyectos para distribucion:\n Github: https://github.com/BlobySoftware\n NPM: https://www.npmjs.com/~blobysoftware\n\n Prueba mi nueva aplicacion oficial:\n https://mate.ingenieria.usac.app\n\n MUCHAS GRACIAS POR JUGAR :)\n escribe mi nombre para salir.\n.     " };
+      "ALEX DANIEL SANTOS VALENZUELA\n 201904117 ceo@ibox.gt\n\n Proyectos personales:\n Github: github.com/alexsan-dev\n NPM: https://www.npmjs.com/~alexsantos\n Medium: https://medium.com/@as62971\n\n Proyectos para distribucion:\n Github: https://github.com/BlobySoftware\n NPM: https://www.npmjs.com/~blobysoftware\n\n Prueba mi nueva aplicacion oficial:\n https://mate.ingenieria.usac.app\n\n << SPAM SPAM SPAM >>\n PRUEBA LA VERSION BETA DE MI TIENDA: https://ibox.gt\n\n MUCHAS GRACIAS POR JUGAR :)\n escribe mi nombre para salir.\n.     ",
+      "                 |!| Fallos: " };
 
   // RETORNAR UNA ALERTA
   public String getWarning(int index) {

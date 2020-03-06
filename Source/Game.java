@@ -382,7 +382,7 @@ public class Game {
     }
   }
 
-  private String printPlayMenu() {
+  private String printPlayMenu(int fails) {
     // LIMPIAR PANTALLA Y MOSTRAR MATRIZ
     Utils.clearScreen(withMessage);
     Utils.printMatrix(matrix);
@@ -393,7 +393,7 @@ public class Game {
     Utils.print(menus[21]);
 
     // MOSTRAR VIDAS Y PUNTOS
-    Utils.print(menus[17] + life + menus[18] + points + "\n");
+    Utils.print(menus[17] + life + menus[18] + points + menus[26] + fails + "\n");
 
     // RETORNAR LAS PALABRAS QUE ENCUENTRE
     return Utils.getOptionStr(name, input);
@@ -410,9 +410,9 @@ public class Game {
     // VERIFICAR SI EL BANCO NO ESTA VACIO
     if (!Utils.isEmpty(words)) {
       // SALIR CUANDO LA VIDA SEA 0 O ENCONTRO TODAS LAS PALABRAS
-      while (life > 0 && foundWords >= -1) {
+      while (life > 0 && foundWords > 0) {
         // OBTENER PALABRA QUE INGRESO
-        String word = printPlayMenu();
+        String word = printPlayMenu(3 - life);
 
         // VERIFICAR SI LA PALABRA QUE INGRESO ES REPETIDA
         if (Utils.isWordRepeats(word, 0, firstWord.split(",")) < 0) {

@@ -12,19 +12,19 @@ public class Utils {
   }
 
   // IMPRIMIR TEXTO CENTRADO
-  public static void printCenter(String text, String sperator) {
+  public static void printCenter(String text, String separator) {
     // CALCULAR EL ESPACIO
     int spaces = Math.round((73 - text.trim().length()) / 2);
 
     // MOSTRAR LA MITAD DE ESPACIOS
     System.out.print("\n");
-    System.out.print(repeatString(sperator, spaces - 1));
+    System.out.print(repeatString(separator, spaces - 1));
 
     // MOSTRAR EL TEXTO
     System.out.print(" " + text.trim() + " ");
 
     // MOSTRAR LA OTRA MITAD
-    System.out.print(repeatString(sperator, spaces - 1));
+    System.out.print(repeatString(separator, spaces - 1));
   }
 
   // MOSTRAR CABECERA DE MENUS
@@ -169,12 +169,12 @@ public class Utils {
   }
 
   // GENERAR UNA PALABRA ALEATORIA
-  public static String randomString(int n) {
+  public static String randomString(int length) {
     // DECLARAR SALIDA
     String out = "";
 
     // RECORRER HASTA N
-    for (int count = 0; count < n; count++)
+    for (int count = 0; count < length; count++)
       out += randomLetter() + "";
 
     // RETORNAR PALABRA
