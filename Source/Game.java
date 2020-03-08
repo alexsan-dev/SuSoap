@@ -449,13 +449,14 @@ public class Game {
       globalStatus[1] = words.length - foundWords;
       globalStatus[2] = 3 - life;
 
-      // MOSTRAR MENSAJE DE PARTIDA TERMINADA
-      withMessage = 9;
     }
 
     // SINO MOSTRAR ERROR 4
     else
       withMessage = 4;
+
+    // SALIR DEL JUEGO
+    exitGame = true;
   }
 
   // MENU DE NUEVA PARTIDA

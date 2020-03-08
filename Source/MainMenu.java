@@ -40,7 +40,7 @@ public class MainMenu {
 
     // MOSTRAR ESTADO
     if (mode == 0) {
-      modeFormat = Integer.toString(orderPoints[index][0]) + ("" + (orderPoints[index][0] == 0 ? 0 : "")) + "      "
+      modeFormat = (orderPoints[index][0] < 10 ? 0 : "") + Integer.toString(orderPoints[index][0]) + "      "
           + Integer.toString(orderPoints[index][2]) + "        " + Integer.toString(orderPoints[index][1]);
       space = 50;
     }
@@ -84,7 +84,7 @@ public class MainMenu {
 
       // SINO MOSTRAR CONDICIONALMENTE
       else if (mode == 1) {
-        if (status[satusIndex][0] == 3 || status[satusIndex][0] == 0) {
+        if (status[satusIndex][2] == 3 || status[satusIndex][0] == 0) {
           showOrderPlayers(2, orderNames, orderPoints, satusIndex, loosersCount);
           loosersCount++;
         }
@@ -213,11 +213,13 @@ public class MainMenu {
 
           // ASIGNAR VALORES DE LAS PARTIDAS
           statusCount++;
-          status[statusCount] = soap.getStatus();
-          names[statusCount] = soap.getName();
+          int[] currentStatus = soap.getStatus();
+          String currentNames = soap.getName();
+          status[statusCount] = currentStatus;
+          names[statusCount] = currentNames;
 
           // SIN ALERTAS
-          alertCode = 0;
+          alertCode = currentStatus[2] == 3 ? 9 : currentStatus[0] == 0 ? 9 : 14;
           break;
         case 2:
           // MENU DE PARTIDAS
