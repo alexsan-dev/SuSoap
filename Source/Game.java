@@ -158,6 +158,7 @@ public class Game {
 
   // OPCION DE INGRESAR PALABRAS
   private void insertWords() {
+    // INICIALIZAR MENU
     boolean breakInsertWords = false;
 
     while (!breakInsertWords) {
@@ -284,9 +285,10 @@ public class Game {
               }
             }
 
-            // SINO MOSTRAR ERROR 5
+            // SINO MOSTRAR ERROR 5 Y SALIR
             else {
               withMessage = 5;
+              breakSearch = true;
             }
           }
         }
@@ -331,9 +333,11 @@ public class Game {
               withMessage = 0;
             }
 
-            // SINO MOSTRAR ERROR 5
-            else
+            // SINO MOSTRAR ERROR 5 Y SALIR
+            else {
               withMessage = 5;
+              breaDelkSearch = true;
+            }
           }
         }
 
@@ -344,6 +348,28 @@ public class Game {
     }
 
     // SINO MOSTRAR ERROR 4
+    else
+      withMessage = 4;
+  }
+
+  private void showWords() {
+    // VERIFICAR SI EXISTEN PALABRAS EN EL BANCO
+    if (!Utils.isEmpty(words)) {
+      // LIMPIAR PANTALLA Y MOSTRAR MENU
+      Utils.clearScreen(withMessage);
+      Utils.print("\n");
+      Utils.printCenter(menus[27], " ");
+      Utils.print(menus[21]);
+
+      // MOSTRAR TODAS LAS PALABRAS
+      for (int wordsIndex = 0; wordsIndex < words.length; wordsIndex++)
+        Utils.print((wordsIndex + 1) + ". " + words[wordsIndex] + "\n");
+
+      // SALIR
+      Utils.getOption(name, input);
+    }
+
+    // SINO SALIR
     else
       withMessage = 4;
   }
@@ -370,6 +396,9 @@ public class Game {
           deleteWords();
           break;
         case 4:
+          showWords();
+          break;
+        case 5:
           // DESPUES DE ACTUALIZAR EL BANCO, INSERTARLO EN LA MATRIZ
           setWordsinMatrix();
           breakInsert = true;
@@ -448,7 +477,6 @@ public class Game {
       globalStatus[0] = points;
       globalStatus[1] = words.length - foundWords;
       globalStatus[2] = 3 - life;
-
     }
 
     // SINO MOSTRAR ERROR 4
@@ -476,7 +504,7 @@ public class Game {
           playMenu();
           break;
         case 3:
-          // OPACION 3 SALIR
+          // OPCION 3 SALIR
           exitGame = true;
           break;
         default:
@@ -509,7 +537,7 @@ public class Game {
       matrixSize = Utils.getOption(name, input);
 
       // LIMITAR A UNA DIMENSION DE 100 (YA NO CABE EN LA PANTALLA)
-      if (matrixSize < 100) {
+      if (matrixSize < 100 && matrixSize > 0) {
         // ASIGNAR NUEVAS DIMENSIONES DE LA MATRIZ
         matrix = new char[matrixSize][matrixSize];
         breakSetDimensions = true;
